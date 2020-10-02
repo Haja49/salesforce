@@ -55,9 +55,9 @@ public class SF045_SalesNewEventCreation {
 		//8) Click on today's date in the calendar
 		Calendar cal = Calendar.getInstance();
 		Date tday = cal.getTime();//get current date and time
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");//change format as required
+		SimpleDateFormat formatter = new SimpleDateFormat("d/M/yyyy");//change format as required
 		String selDate= formatter.format(tday);
-		String[] dvalue = selDate.split("/");
+		String[] dvalue = selDate.split("/");//split and get date value alone
 		System.out.println(dvalue[0]);
 		String dval = dvalue[0];
 		String date_xpath = "//span[text()='"+dval+"']";
@@ -67,13 +67,22 @@ public class SF045_SalesNewEventCreation {
 		
 		String timeslot = driver.findElementByXPath("//span[text()='10am']").getText();
 		System.out.println("Timeslot selected:" + timeslot);
-		driver.findElementByXPath("//strong[text() = 'SUN 27']").click();
-		driver.findElementByXPath("//span[text() = 'All-Day Event']").click(); //Uncheck the checkbox to enter time values
 		
-		// Select 10 AM 
+		// Pass Day Date in xpath; Unable to select particular time cell so click on column and enter time slot to create event
+
+		SimpleDateFormat formatter_a = new SimpleDateFormat("EEE d");//TO get date as SUN 1
+		String eDate = formatter_a.format(tday);
+		System.out.println(eDate.toUpperCase());
+		String xDate = "//strong[text() = '"+eDate.toUpperCase()+"']";
+		//driver.findElementByXPath("//strong[text() = 'SUN 27']").click();
+		driver.findElementByXPath(xDate).click();
+		//driver.findElementByXPath("//strong[text ()='THU 1']//following::div/span[text () = '10am']//following::ul[5]").click();
+		
+		// Select 10 AM
+		driver.findElementByXPath("//span[text() = 'All-Day Event']").click(); //Uncheck the checkbox to enter time values
 		driver.findElementByXPath("(//input[@class='slds-input slds-combobox__input'])[3]").sendKeys(Keys.SPACE);
 		WebElement start_time = driver.findElementByXPath("//span[@title='10:00 AM']");
-		JavascriptExecutor selecttime = (JavascriptExecutor)driver;
+		JavascriptExecutor selecttime = (JavascriptExecutor)driver;//To scroll and select 10 AM
 		selecttime.executeScript("arguments[0].scrollIntoView(true)", start_time);
 		selecttime.executeScript("arguments[0].click();", start_time);
 		

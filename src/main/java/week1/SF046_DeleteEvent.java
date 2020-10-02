@@ -51,7 +51,12 @@ public class SF046_DeleteEvent {
 		JavascriptExecutor clickelement = (JavascriptExecutor)driver;
 		clickelement.executeScript("arguments[0].click();", cal_link);
 		
-		//8) Hover over 'Email' event that is between 10 AM to 11 AM
+		//8) Hover over 'Email' event that is between 10 AM to 11 AM/
+		
+		List<WebElement> email_events = driver.findElementsByXPath("//a[text()='Email']");
+		if(email_events.isEmpty())
+			System.out.println("No Email Event available." );
+		else {
 		WebElement eventElement = driver.findElementByXPath("//a[text()='Email']");
 		Actions action = new Actions(driver);
 		action. moveToElement(eventElement).perform();
@@ -63,6 +68,7 @@ public class SF046_DeleteEvent {
 		//10) Click on 'Delete'
 		driver.findElementByXPath("//span[text()='Delete']").click();
 		Thread.sleep(2000);
+		}
 		
 		//11) Verify event deleted
 		List<WebElement> events = driver.findElementsByXPath("//a[text()='Email']");
